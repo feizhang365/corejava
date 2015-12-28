@@ -10,10 +10,9 @@ import org.quartz.JobExecutionException;
 
 
 public class FindCertainExtFile implements Job {
-	private static final String FILE_DIR = "/Users/fzh/dev";
-	private static final String FILE_TEXT_EXT = ".java";
+	private static final String FILE_DIR = "/Users/fzh/codeHome/cmd";
+	private static final String FILE_TEXT_EXT = ".html";
 	private static ArrayList<File> files = new ArrayList<>(); 
-	
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		listFile(FILE_DIR, FILE_TEXT_EXT);
