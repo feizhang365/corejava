@@ -2,9 +2,7 @@ package fei.quartz.demo;
 
 import java.io.File;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,12 +13,12 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-public class MoveFile2Des implements Job{
+public class MoveFile2Des2 implements Job{
 	private static final String FILE_DIR = "/Users/fzh/codeHome/cmd";
 	private static final String DES_DIR = "/Users/fzh/codeHome/cmd/des";
-	private static final String FILE_TEXT_EXT = ".html";
+	private static final String FILE_TEXT_EXT = ".tar.gz";
 	private ArrayList<File> files = null; 
-	final static Logger logger = Logger.getLogger(MoveFile2Des.class);
+	final static Logger logger = Logger.getLogger(MoveFile2Des2.class);
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		logger.error("xxxxxxxxxxxxxxxxx");
@@ -55,38 +53,39 @@ public class MoveFile2Des implements Job{
 	private void insertFile(String fileName,String filePath){
 		System.out.println(fileName+"====="+filePath);
 		Connection conn = null;
-		PreparedStatement stmtQ = null;
+//		PreparedStatement stmtQ = null;
 		PreparedStatement stmtA = null;
 		try {
-			conn = getConnection();
-			conn.setAutoCommit(false);
-			String findSql = "select * from fileinfo where name=? and path =?";
-			stmtQ = conn.prepareStatement(findSql);
-			stmtQ.setString(1, fileName);
-			stmtQ.setString(2, filePath);
-			ResultSet res = stmtQ.executeQuery();
-			while (res.next()) {
-				System.out.println("EEEEEEEEEEEEE========"+res.getString(1));
-				//throw new Exception("same file exists");
-			}
+			conn = ConnManager.getConnection();
+			ConnManager.beginConnection(conn);
+//			String findSql = "select * from fileinfo where name=? and path =?";
+//			stmtQ = conn.prepareStatement(findSql);
+//			stmtQ.setString(1, fileName);
+//			stmtQ.setString(2, filePath);
+//			ResultSet res = stmtQ.executeQuery();
+//			while (res.next()) {
+//				System.out.println("EEEEEEEEEEEEE========"+res.getString(1));
+//				throw new Exception("same file exists");
+//			}
 			//insert
-			String addSql = "insert into fileinfo(name,path) values(?,?)";
+			String addSql = "insert into fileinfo(name,path,createDate) values(?,?,?)";
 			stmtA = conn.prepareStatement(addSql);
 			stmtA.setString(1, fileName);
 			stmtA.setString(2, filePath);
+			stmtA.setDate(3, java.sql.Date.valueOf("2015-12-29"));
 			stmtA.executeUpdate();
-			conn.commit();
+			ConnManager.commitConnection(conn);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			if(stmtQ != null){
-				try {
-					stmtQ.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-					stmtQ = null;
-				}
-			}
+//			if(stmtQ != null){
+//				try {
+//					stmtQ.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//					stmtQ = null;
+//				}
+//			}
 			if(stmtA != null){
 				try {
 					stmtA.close();
@@ -95,32 +94,12 @@ public class MoveFile2Des implements Job{
 					stmtA = null;
 				}
 			}
-			
-			if(conn != null){
-				try {
-					conn.close();
-					conn = null;
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			System.out.println("conn===="+conn);
+			System.out.println("before ==="+conn);
+			ConnManager.closeConnection();
+			System.out.println("after ==="+conn);
 		}
 	}
 	
-	/**
-	 * get mysql db connection
-	 * @return
-	 * @throws ClassNotFoundException
-	 * @throws SQLException
-	 */
-	private Connection getConnection() throws ClassNotFoundException, SQLException{
-    	//register Mysql driver
-		Class.forName("com.mysql.jdbc.Driver");
-        Connection conn = null;
-        conn = DriverManager.getConnection("jdbc:mysql://121.43.120.26:3306/jhdataplatform?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull","jhdata01", "jh123!@");
-        return conn;
-	}
 	
 	/**
 	 * list files with special extension
