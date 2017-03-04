@@ -8,5 +8,16 @@
 	<classpathentry kind="lib" path="/Users/fzh/dev/corejava/lib/quartz-jobs-2.2.2.jar"/>
 	<classpathentry kind="lib" path="/Users/fzh/dev/corejava/lib/slf4j-api-1.7.7.jar"/>
 	<classpathentry kind="lib" path="/Users/fzh/dev/corejava/lib/slf4j-log4j12-1.7.7.jar"/>
+	<classpathentry kind="lib" path="/Users/fzh/resources/javausefullib/mysql-connector-java-5.1.18.jar"/>
+	<classpathentry kind="lib" path="/Users/fzh/.m2/repository/org/jsoup/jsoup/1.10.2/jsoup-1.10.2.jar" sourcepath="/Users/fzh/.m2/repository/org/jsoup/jsoup/1.10.2/jsoup-1.10.2-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="org.eclipse.jst.component.archivename" value="jsoup-1.10.2.jar"/>
+			<attribute name="maven.groupId" value="org.jsoup"/>
+			<attribute name="maven.artifactId" value="jsoup"/>
+			<attribute name="maven.version" value="1.10.2"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

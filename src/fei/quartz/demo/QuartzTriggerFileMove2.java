@@ -19,8 +19,9 @@ public class QuartzTriggerFileMove2 {
 		Trigger trigger = TriggerBuilder.newTrigger().withIdentity("fileMVTrigger2","group2").withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(10).repeatForever()).build();
 		//scheduler it
 		Scheduler scheduler = new StdSchedulerFactory().getScheduler();
-		scheduler.start();
 		scheduler.scheduleJob(job, trigger);		
+		scheduler.start();
+		
 	}
 
 }
